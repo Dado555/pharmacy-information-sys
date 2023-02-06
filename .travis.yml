@@ -1,0 +1,29 @@
+matrix:
+
+  include:
+
+    - language: java
+      jdk: oraclejdk11
+      services:
+        - postgresql
+      before_install:
+        - cd backend
+        - chmod +x mvnw
+      script:
+        - ./mvnw clean install -DskipTests=false -B
+      dist: trusty
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_API_KEY
+        app: pis-back
+        
+    - language: node_js
+      node_js:
+      - "node"
+      cache: npm
+      script: 
+        - cd frontend
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_API_KEY
+        app: pis-front
